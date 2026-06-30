@@ -328,7 +328,7 @@ def receipt_page(order, autoprint=False):
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Receipt {order['ticket_no']} — {STORE_NAME}</title>
-  <link rel="stylesheet" href="/static/styles.css?v=1782814339.4704366">
+  <link rel="stylesheet" href="/static/styles.css?v=1782845005.3948853">
 </head>
 <body class="receipt-body">
   <section class="receipt">
@@ -357,7 +357,7 @@ def hidden_admin_page():
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Portal — BuildMart</title>
-  <link rel="stylesheet" href="/static/admin.css">
+  <link rel="stylesheet" href="/static/admin.css?v=1782846743.6849697">
 </head>
 <body>
   <div class="admin-shell">
@@ -424,12 +424,13 @@ def hidden_admin_page():
   <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script src="/static/admin.js" defer></script>
+  <script src="/static/admin.js?v=1782848139.5770283" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const shell = document.querySelector('.admin-shell');
       const closeBtn = document.getElementById('sidebarToggle');
       const openBtn = document.getElementById('sidebarOpenBtn');
+      if (window.innerWidth <= 860) shell.classList.add('collapsed');
       closeBtn.addEventListener('click', () => shell.classList.add('collapsed'));
       openBtn.addEventListener('click', () => shell.classList.remove('collapsed'));
     });
@@ -459,11 +460,14 @@ def page(title, active, content, role=None):
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/styles.css?v=1782814339.4704366">
+  <link rel="stylesheet" href="/static/styles.css?v=1782845005.3948853">
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-left">
+      <button class="mobile-nav-toggle" id="mobileNavToggle">
+        <span></span><span></span><span></span>
+      </button>
       <a class="brand" href="/pos">
         <div class="brand-logo">B</div>
         <div class="brand-text">
@@ -481,6 +485,23 @@ def page(title, active, content, role=None):
   </header>
   <main>{content}</main>
   <script src="/static/app.js?v=1782840019.8126402" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {{
+      const toggle = document.getElementById('mobileNavToggle');
+      const center = document.querySelector('.topbar-center');
+      if(toggle && center) {{
+        toggle.addEventListener('click', (e) => {{
+          e.stopPropagation();
+          center.classList.toggle('open');
+        }});
+        document.addEventListener('click', (e) => {{
+          if (!center.contains(e.target) && !toggle.contains(e.target)) {{
+            center.classList.remove('open');
+          }}
+        }});
+      }}
+    }});
+  </script>
 </body>
 </html>"""
 
@@ -493,7 +514,7 @@ def employee_login_page(error=""):
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Staff Login — {STORE_NAME} POS</title>
-  <link rel="stylesheet" href="/static/styles.css?v=1782814339.4704366">
+  <link rel="stylesheet" href="/static/styles.css?v=1782845005.3948853">
 </head>
 <body class="login-body">
   <form class="login-panel" method="post" action="/login">
@@ -540,7 +561,7 @@ def cashier_login_page(error=""):
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cashier Login — {STORE_NAME} POS</title>
-  <link rel="stylesheet" href="/static/styles.css?v=1782814339.4704366">
+  <link rel="stylesheet" href="/static/styles.css?v=1782845005.3948853">
 </head>
 <body class="login-body">
   <form class="login-panel" method="post" action="/cashier">
@@ -564,7 +585,7 @@ def admin_login_page(error=""):
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Login — {STORE_NAME}</title>
-  <link rel="stylesheet" href="/static/admin.css">
+  <link rel="stylesheet" href="/static/admin.css?v=1782846743.6849697">
   <style>
     body {{ display:grid; place-items:center; min-height:100vh; background:var(--bg); }}
     .admin-login-panel {{

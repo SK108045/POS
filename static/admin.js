@@ -190,18 +190,30 @@ function buildDashboard(s) {
   const maxSales = Math.max(...s.top_items.map(i=>i.sales), 1);
   $('#topItemsArea').innerHTML = s.top_items.length ? `
     <div class="chart-area" id="barChart"></div>
-    <div style="display:flex;justify-content:space-between;margin-top:8px;gap:4px">
-      ${s.top_items.map(i=>`<div style="flex:1;text-align:center;font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.name}</div>`).join('')}
+    <div style="display:flex;justify-content:space-between;margin-top:8px;gap:4px;align-items:flex-start;">
+      ${s.top_items.map(i=>`<div style="flex:1;text-align:center;font-size:10px;color:var(--muted);word-wrap:break-word;line-height:1.2;">${i.name}</div>`).join('')}
     </div>
   ` : `<div class="empty-state"><p>No sales data yet</p></div>`;
 
   if (s.top_items.length) {
     const chart = $('#barChart');
-    chart.innerHTML = s.top_items.map(i => {
+    const colors = [
+      'linear-gradient(to top, #0f766e, #14b8a6)', // Teal (primary)
+      'linear-gradient(to top, #ea580c, #f97316)', // Orange
+      'linear-gradient(to top, #2563eb, #3b82f6)', // Blue
+      'linear-gradient(to top, #7c3aed, #8b5cf6)', // Violet
+      'linear-gradient(to top, #db2777, #ec4899)', // Pink
+      'linear-gradient(to top, #059669, #10b981)', // Emerald
+      'linear-gradient(to top, #d97706, #f59e0b)', // Amber
+      'linear-gradient(to top, #4f46e5, #6366f1)', // Indigo
+    ];
+    chart.innerHTML = s.top_items.map((i, idx) => {
       const pct = Math.round((i.sales / maxSales) * 100);
+      const bg = colors[idx % colors.length];
       return `
-        <div class="chart-bar-wrap" title="${i.name}: ${money(i.sales)} (${i.qty} sold)">
-          <div class="chart-bar" style="height:${Math.max(pct,4)}%"></div>
+        <div class="chart-bar-wrap" title="${i.name} — ${i.qty} sold" onclick="this.classList.toggle('show-val')">
+          <div class="chart-val">${money(i.sales)}</div>
+          <div class="chart-bar" style="height:${Math.max(pct,4)}%; background:${bg}"></div>
         </div>`;
     }).join('');
   }
@@ -749,8 +761,10 @@ function buildCustomers() {
               <td style="color:var(--muted)">${c.phone||'—'}</td>
               <td style="color:var(--muted)">${c.email||'—'}</td>
               <td>
-                <button class="btn btn-ghost btn-sm" onclick="editCustomer(${c.id})">Edit</button>
-                <a class="btn btn-primary btn-sm" href="https://wa.me/${c.phone.replace(/\+/g,'').replace(/^0/, '254')}?text=Thank%20you%20for%20shopping%20at%20BuildMart%21%20We%20value%20your%20business." target="_blank" style="text-decoration:none; display:inline-block; margin-left:8px;">Send PR Message</a>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button class="btn btn-ghost btn-sm" onclick="editCustomer(${c.id})">Edit</button>
+                  <a class="btn btn-primary btn-sm" href="https://wa.me/${c.phone.replace(/\+/g,'').replace(/^0/, '254')}?text=Thank%20you%20for%20shopping%20at%20BuildMart%21%20We%20value%20your%20business." target="_blank" style="text-decoration:none; display:inline-flex;">Send PR Message</a>
+                </div>
               </td>
             </tr>
           `).join('')}
