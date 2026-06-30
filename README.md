@@ -60,25 +60,3 @@ start-pos.bat — quick-start script for Windows
 - A JSON API under `/api/*` that the frontend talks to for orders, payments, and admin actions
 
 The frontend boots up by hitting `/api/bootstrap`, then it's all API calls from there for creating orders, adding line items, and processing payments.
-
-## A few practical notes
-
-**Back up your data.** The DB is just a file at `data/pos.sqlite3` — back that folder up regularly, especially before updates.
-
-**This is built for local/LAN use.** If you want to expose it outside your network, put it behind nginx with TLS, lock it down by IP, and definitely change the default credentials first.
-
-**Customizing the branding** is just editing `STORE_NAME` and `STORE_TAGLINE` at the top of `app.py`. Seed data lives in `init_db()` if you want to tweak starting products/categories.
-
-## Where this could go next
-
-- Dockerfile + volume mount for `data/` to make deployment painless
-- Reverse proxy setup for anyone running this beyond a single LAN
-- Swap out the default creds on first boot instead of relying on a README warning
-
-## License
-
-None yet — add one if you're planning to share or distribute this beyond personal/client use.
-
----
-
-Built solo, from scratch, to actually solve a problem instead of being another over-engineered POS demo. Lean by design.
