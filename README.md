@@ -1,80 +1,84 @@
-# BuildMart — Lightweight Retail POS
+# BuildMart POS
 
-BuildMart is a compact, single-machine retail/hardware POS implemented in a single Python process with a vanilla JavaScript front end. It targets small shops and single-terminal / LAN deployments that need a minimal, dependency-free POS with inventory, suppliers, orders, and simple reporting.
+A lightweight retail/hardware POS system built for small shops that just need something that works — no bloated dependencies, no cloud subscription, no nonsense. Runs as a single Python process with a vanilla JS frontend, backed by SQLite. Point it at a till, plug in a barcode scanner, and you're selling.
 
-## Highlights
+I built this to handle real day-to-day shop operations: inventory tracking, supplier purchases, sales, and reporting, all from one terminal (or a few on the same LAN).
 
-- Single-file Python server (no external Python packages required)
-- SQLite (WAL) local database stored in `data/pos.sqlite3`
-- Touch-friendly front-end UI (vanilla JS + CSS)
-- Inventory, suppliers, purchases, sales, basic reports, and cashier/admin roles
-- Image upload support for product images (saved to `static/uploads`)
+## What it does
 
-## Quick start (local)
+- Runs as a single Python server — no external packages to install
+- SQLite database (WAL mode) so it's fast and doesn't choke under concurrent writes
+- Clean, touch-friendly UI that works well on a small POS screen or tablet
+- Full inventory + supplier + purchase order tracking
+- Cashier and admin roles, with PIN login for quick staff access
+- Product image uploads baked in
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/SK108045/POS.git
-   cd POS
-   ```
+## Getting it running
 
-2. Run with Python 3:
-   ```bash
-   # default: runs on 127.0.0.1:3000
-   python app.py
+Clone it:
+```bash
+git clone https://github.com/SK108045/POS.git
+cd POS
+```
 
-   # to change the HTTP port:
-   POS_PORT=8080 python app.py
-   ```
+Run it:
+```bash
+python app.py
+```
 
-3. Open the app in your browser:
-   - http://127.0.0.1:3000 (or the port you set)
+That spins it up on `127.0.0.1:3000` by default. Want a different port?
+```bash
+POS_PORT=8080 python app.py
+```
 
-## Default credentials
+Then just open `http://127.0.0.1:3000` in a browser and you're in.
 
-- **Terminal (staff PIN):** `1234`
-  - username: `terminal` (used for quick staff login via PIN)
-- **Admin (manager):** `admin` / `admin123`
-  - Use the Admin portal to manage users, products, suppliers, and stock.
+## Logging in
 
-## Notes and recommendations
+- **Staff/cashier:** PIN `1234`
+- **Admin:** `admin` / `admin123`
 
-**Data and backups**
-- The SQLite database file is in `data/pos.sqlite3` and uses WAL mode. Back up the `data/` directory regularly.
-- Do not place the data file on an unreliable filesystem without backups.
+Change both of these before you actually use it for a real shop — they're just there to get you started.
 
-**Security**
-- This app is intended for local or LAN use. If you must expose it to the internet, add TLS, a proper reverse proxy, strong credentials, and restrict access by IP.
-- Change the default admin password immediately after first run.
-
-**Port and binding**
-- By default the server binds to `127.0.0.1` and listens on port `3000`. To change the port, set the environment variable `POS_PORT` before starting the app.
-
-**Windows helper**
-- `start-pos.bat` shows an example of starting from `D:\POS`. Edit the script or run `python app.py` from your working directory instead.
-
-## File layout (important files)
+## Project layout
 
 ```
-app.py        — Main Python HTTP server, DB initialization, API routes, and HTML templates
-static/       — Front-end JS, CSS, and runtime uploads
-  ├── app.js       — POS frontend logic
-  ├── admin.js     — Admin UI logic
+app.py        — the whole backend: server, routes, DB setup, templates
+static/       — frontend assets
+  ├── app.js       — POS logic
+  ├── admin.js     — admin dashboard logic
   └── styles.css, admin.css
-data/         — SQLite database (pos.sqlite3) and WAL files
-start-pos.bat — Example Windows batch to run the server
+data/         — SQLite DB lives here (pos.sqlite3)
+start-pos.bat — quick-start script for Windows
 ```
 
-## How it works (brief)
+## How it's wired together
 
-- `app.py` runs a `ThreadingHTTPServer` that serves:
-  - Static assets under `/static/*`
-  - HTML pages: `/pos`, `/cashier`, `/admin`, `/suppliers`, `/reports`, etc.
-  - JSON API under `/api/*` for bootstrap/menu/orders/payments/admin actions.
-- The front-end (`static/app.js`) boots with `/api/bootstrap`, then runs the POS UI and issues API requests to create orders, add items, and mark payments.
+`app.py` runs a threaded HTTP server handling everything:
+- Static files under `/static/*`
+- Pages like `/pos`, `/cashier`, `/admin`, `/suppliers`, `/reports`
+- A JSON API under `/api/*` that the frontend talks to for orders, payments, and admin actions
 
-## Extending or customizing
+The frontend boots up by hitting `/api/bootstrap`, then it's all API calls from there for creating orders, adding line items, and processing payments.
 
-- To change store branding: edit `STORE_NAME` and `STORE_TAGLINE` in `app.py`.
-- To seed or modify initial data: look in `init_db()` inside `app.py`.
-- To add TLS or production-grade deployment: run behind a reverse proxy (nginx) with TLS and bind the app to localhost only, or containerize it 
+## A few practical notes
+
+**Back up your data.** The DB is just a file at `data/pos.sqlite3` — back that folder up regularly, especially before updates.
+
+**This is built for local/LAN use.** If you want to expose it outside your network, put it behind nginx with TLS, lock it down by IP, and definitely change the default credentials first.
+
+**Customizing the branding** is just editing `STORE_NAME` and `STORE_TAGLINE` at the top of `app.py`. Seed data lives in `init_db()` if you want to tweak starting products/categories.
+
+## Where this could go next
+
+- Dockerfile + volume mount for `data/` to make deployment painless
+- Reverse proxy setup for anyone running this beyond a single LAN
+- Swap out the default creds on first boot instead of relying on a README warning
+
+## License
+
+None yet — add one if you're planning to share or distribute this beyond personal/client use.
+
+---
+
+Built solo, from scratch, to actually solve a problem instead of being another over-engineered POS demo. Lean by design.
