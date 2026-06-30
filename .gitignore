@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+pos.db
+pos.log
+.env
