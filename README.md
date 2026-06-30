@@ -1,62 +1,99 @@
 # BuildMart POS
 
-A lightweight retail/hardware POS system built for small shops that just need something that works — no bloated dependencies, no cloud subscription, no nonsense. Runs as a single Python process with a vanilla JS frontend, backed by SQLite. Point it at a till, plug in a barcode scanner, and you're selling.
+A simple Point of Sale (POS) system for retail and hardware stores. It is built with Python, SQLite, HTML, CSS, and vanilla JavaScript, with a focus on being lightweight and easy to run without requiring additional frameworks or services.
 
-I built this to handle real day-to-day shop operations: inventory tracking, supplier purchases, sales, and reporting, all from one terminal (or a few on the same LAN).
+The system includes inventory management, sales processing, supplier management, reporting, and user roles for cashiers and administrators.
 
-## What it does
+---
 
-- Runs as a single Python server — no external packages to install
-- SQLite database (WAL mode) so it's fast and doesn't choke under concurrent writes
-- Clean, touch-friendly UI that works well on a small POS screen or tablet
-- Full inventory + supplier + purchase order tracking
-- Cashier and admin roles, with PIN login for quick staff access
-- Product image uploads baked in
+## Features
 
-## Getting it running
+- Lightweight Python backend
+- SQLite database
+- Responsive interface for desktop and touch displays
+- Inventory management
+- Supplier and purchase management
+- Sales processing
+- Cashier and administrator accounts
+- Product image uploads
+- Reporting dashboard
 
-Clone it:
+---
+
+## Technologies Used
+
+- Python
+- SQLite
+- HTML
+- CSS
+- JavaScript
+
+---
+
+## Installation
+
+Clone the repository:
+
 ```bash
 git clone https://github.com/SK108045/POS.git
 cd POS
 ```
 
-Run it:
+Start the server:
+
 ```bash
 python app.py
 ```
 
-That spins it up on `127.0.0.1:3000` by default. Want a different port?
+By default, the application runs at:
+
+```
+http://127.0.0.1:3000
+```
+
+To use a different port:
+
 ```bash
 POS_PORT=8080 python app.py
 ```
 
-Then just open `http://127.0.0.1:3000` in a browser and you're in.
+---
 
-## Logging in
+## Default Credentials
 
-- **Staff/cashier:** PIN `1234`
-- **Admin:** `admin` / `admin123`
+| Role | Credentials |
+|------|-------------|
+| Cashier | PIN: `1234` |
+| Administrator | Username: `admin`<br>Password: `admin123` |
 
-Change both of these before you actually use it for a real shop — they're just there to get you started.
+> **Note:** Change the default credentials before using the application in production.
 
-## Project layout
+---
 
+## Project Structure
+
+```text
+.
+├── app.py
+├── static/
+│   ├── app.js
+│   ├── admin.js
+│   ├── styles.css
+│   └── admin.css
+├── data/
+│   └── pos.sqlite3
+├── start-pos.bat
+└── README.md
 ```
-app.py        — the whole backend: server, routes, DB setup, templates
-static/       — frontend assets
-  ├── app.js       — POS logic
-  ├── admin.js     — admin dashboard logic
-  └── styles.css, admin.css
-data/         — SQLite DB lives here (pos.sqlite3)
-start-pos.bat — quick-start script for Windows
-```
 
-## How it's wired together
+---
 
-`app.py` runs a threaded HTTP server handling everything:
-- Static files under `/static/*`
-- Pages like `/pos`, `/cashier`, `/admin`, `/suppliers`, `/reports`
-- A JSON API under `/api/*` that the frontend talks to for orders, payments, and admin actions
+## Overview
 
-The frontend boots up by hitting `/api/bootstrap`, then it's all API calls from there for creating orders, adding line items, and processing payments.
+The backend is contained in `app.py`, which serves the web interface and provides the API endpoints used by the frontend.
+
+The frontend communicates with the backend through `/api/*` endpoints to manage products, inventory, suppliers, purchases, sales, and reports.
+
+Application data is stored in an SQLite database located in the `data` directory.
+
+---
