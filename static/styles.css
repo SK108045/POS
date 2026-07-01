@@ -735,7 +735,8 @@ main { min-height: calc(100vh - 63px); }
 .receipt {
   width: min(320px, 100%);
   background: white;
-  color: #111;
+  color: #000;
+  font-weight: 700;
   padding: 18px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -780,7 +781,8 @@ main { min-height: calc(100vh - 63px); }
 }
 
 .receipt-note {
-  color: #555;
+  color: #000;
+  font-weight: 700;
   font-size: 11px;
   padding: 8px 0;
   text-align: center;
@@ -1067,25 +1069,29 @@ main { min-height: calc(100vh - 63px); }
     inset: auto !important;
   }
 
-  #receiptModal .receipt {
+  .receipt, .receipt * {
+    font-family: 'Courier New', Courier, monospace !important;
+    color: #000 !important;
+    font-weight: 900 !important;
+  }
+
+  .receipt {
     width: 100% !important;
     border: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 11px;
     line-height: 1.4;
-    color: #000 !important;
   }
 
-  #receiptModal .receipt h1 { font-size: 15px; letter-spacing: 1px; margin-bottom: 2px; }
-  #receiptModal .receipt p { font-size: 10px; margin: 0 0 5px; }
-  #receiptModal .receipt-line { font-size: 10px; padding: 3px 0; border-bottom: 1px dashed #999 !important; }
-  #receiptModal .receipt table { margin: 5px 0; }
-  #receiptModal .receipt td { font-size: 10px; padding: 3px 0; border-top: 1px dashed #bbb !important; }
-  #receiptModal .receipt-total { font-size: 13px; font-weight: 900; border-top: 2px solid #000 !important; border-bottom: 0 !important; padding: 4px 0 !important; }
-  #receiptModal .receipt-note { font-size: 9px; text-align: center; margin-top: 5px; color: #444 !important; }
+  .receipt h1 { font-size: 18px !important; letter-spacing: 1px; margin-bottom: 4px; }
+  .receipt p { font-size: 12px !important; margin: 0 0 5px; }
+  .receipt .receipt-line { font-size: 12px !important; padding: 4px 0; border-bottom: 1px dashed #000 !important; }
+  .receipt table { margin: 6px 0; width: 100%; }
+  .receipt td { font-size: 12px !important; padding: 4px 0; border-top: 1px dashed #000 !important; }
+  .receipt .receipt-total { font-size: 16px !important; border-top: 2px solid #000 !important; border-bottom: 0 !important; padding: 6px 0 !important; }
+  .receipt .receipt-note { font-size: 11px !important; text-align: center; margin-top: 6px; }
+  
   #receiptModal .receipt-modal-close,
   #receiptModal #receiptPrintBtn { display: none !important; }
 }
