@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 DB_PATH = DATA_DIR / "pos.sqlite3"
 STATIC_DIR = BASE_DIR / "static"
-HOST = "127.0.0.1"
+HOST = os.environ.get("POS_HOST", "0.0.0.0")
 PORT = int(__import__("os").environ.get("POS_PORT", "3000"))
 
 SESSIONS = {}
@@ -332,16 +332,23 @@ def receipt_page(order, autoprint=False):
 </head>
 <body class="receipt-body">
   <section class="receipt">
-    <h1>{STORE_NAME}</h1>
-    <p>{STORE_TAGLINE}</p>
+    <h1>{STORE_NAME} HARDWARES</h1>
+    <p>Tel: 0723056885</p>
+    <h2 style="font-size: 16px; margin: 12px 0 8px; font-weight: 800;">* ORIGINAL *</h2>
+    <div class="receipt-line"><span>Date</span><strong>{__import__('datetime').datetime.now().strftime('%d/%m/%Y %H:%M')}</strong></div>
     <div class="receipt-line"><span>Receipt #</span><strong>{order['ticket_no']}</strong></div>
     <div class="receipt-line"><span>Type</span><strong>{order['order_type']}</strong></div>
     <div class="receipt-line"><span>Served By</span><strong>{order.get('employee_name') or '-'}</strong></div>
     <div class="receipt-line"><span>Status</span><strong>{order['status']}</strong></div>
+    <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
     <table>
       <tbody>{item_rows}</tbody>
     </table>
+    <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
     <div class="receipt-total"><span>Total</span><strong>KES {order['total']}</strong></div>
+    <div class="receipt-line"><span>Amount Tendered</span><strong>KES {order['total']}</strong></div>
+    <div class="receipt-line"><span>Change</span><strong>KES 0.00</strong></div>
+    <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
     <p class="receipt-note">Thank you for shopping at {STORE_NAME}!</p>
     <button onclick="window.print()">Print Receipt</button>
   </section>
