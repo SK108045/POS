@@ -19,16 +19,33 @@ function showReceiptModal(order) {
       <button class="receipt-modal-close" id="receiptModalClose" title="Close">&times;</button>
       <div class="receipt-modal-print-area">
         <div class="receipt">
-          <h1>EITY FIT</h1>
-          <p>Hardware &amp; Retail POS</p>
+          <h1>EITY FIT HARDWARES</h1>
+          <p>Tel: 0723056885</p>
+          <p>PIN: P051188392M | VAT: 0184493K</p>
+          <h2 style="font-size: 16px; margin: 12px 0 8px; font-weight: 800;">* ORIGINAL *</h2>
+          <div class="receipt-line"><span>Date</span><strong>${new Date().toLocaleString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})}</strong></div>
           <div class="receipt-line"><span>Receipt #</span><strong>${order.ticket_no}</strong></div>
           <div class="receipt-line"><span>Type</span><strong>${order.order_type}</strong></div>
           ${order.customer_name ? `<div class="receipt-line"><span>Customer</span><strong>${order.customer_name}</strong></div>` : ''}
           <div class="receipt-line"><span>Served By</span><strong>${order.employee_name || '-'}</strong></div>
           <div class="receipt-line"><span>Status</span><strong>${order.status}</strong></div>
+          <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
           <table><tbody>${itemRows}</tbody></table>
+          <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
           <div class="receipt-total"><span>Total</span><strong>KES ${moneyRaw(order.total_cents)}</strong></div>
-          <p class="receipt-note">Thank you for shopping at EITY FIT!</p>
+          <div class="receipt-line"><span>Amount Tendered</span><strong>KES ${moneyRaw(order.total_cents)}</strong></div>
+          <div class="receipt-line"><span>Change</span><strong>KES 0.00</strong></div>
+          <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
+          <div class="receipt-line"><span>Total Excl. VAT</span><strong>KES ${moneyRaw(order.total_cents / 1.16)}</strong></div>
+          <div class="receipt-line"><span>Total VAT (16%)</span><strong>KES ${moneyRaw(order.total_cents - (order.total_cents / 1.16))}</strong></div>
+          <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
+          <div class="receipt-line"><span>Loyalty Points Earned</span><strong>${Math.floor(order.total_cents / 10000)} pts</strong></div>
+          <p class="receipt-note" style="line-height: 1.6; margin-top: 12px;">
+            Thank you for shopping at EITY FIT!<br>
+            Please retain receipt for your records.<br><br>
+            Powered by EITY FIT POS SYSTEM<br>
+            ------- END OF RECEIPT -------
+          </p>
           <button id="receiptPrintBtn">Print Receipt</button>
         </div>
       </div>

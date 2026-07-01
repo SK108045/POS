@@ -334,6 +334,7 @@ def receipt_page(order, autoprint=False):
   <section class="receipt">
     <h1>{STORE_NAME} HARDWARES</h1>
     <p>Tel: 0723056885</p>
+    <p>PIN: P051188392M | VAT: 0184493K</p>
     <h2 style="font-size: 16px; margin: 12px 0 8px; font-weight: 800;">* ORIGINAL *</h2>
     <div class="receipt-line"><span>Date</span><strong>{__import__('datetime').datetime.now().strftime('%d/%m/%Y %H:%M')}</strong></div>
     <div class="receipt-line"><span>Receipt #</span><strong>{order['ticket_no']}</strong></div>
@@ -349,7 +350,16 @@ def receipt_page(order, autoprint=False):
     <div class="receipt-line"><span>Amount Tendered</span><strong>KES {order['total']}</strong></div>
     <div class="receipt-line"><span>Change</span><strong>KES 0.00</strong></div>
     <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
-    <p class="receipt-note">Thank you for shopping at {STORE_NAME}!</p>
+    <div class="receipt-line"><span>Total Excl. VAT</span><strong>KES {f"{(order['total_cents'] / 1.16) / 100:,.2f}"}</strong></div>
+    <div class="receipt-line"><span>Total VAT (16%)</span><strong>KES {f"{(order['total_cents'] - (order['total_cents'] / 1.16)) / 100:,.2f}"}</strong></div>
+    <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
+    <div class="receipt-line"><span>Loyalty Points Earned</span><strong>{int(order['total_cents'] / 10000)} pts</strong></div>
+    <p class="receipt-note" style="line-height: 1.6; margin-top: 12px;">
+      Thank you for shopping at {STORE_NAME}!<br>
+      Please retain receipt for your records.<br><br>
+      Powered by EITY FIT POS SYSTEM<br>
+      ------- END OF RECEIPT -------
+    </p>
     <button onclick="window.print()">Print Receipt</button>
   </section>
   {"<script>window.addEventListener('load', () => setTimeout(() => window.print(), 250));</script>" if autoprint else ""}
