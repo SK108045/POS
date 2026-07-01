@@ -333,7 +333,7 @@ def receipt_page(order, autoprint=False):
 <body class="receipt-body">
   <section class="receipt">
     <h1>{STORE_NAME} HARDWARES</h1>
-    <p>Nairobi Main Branch</p>
+    <p>PJ CENTER-PARKLANDS</p>
     <p>Tel: 0723056885</p>
     <h2 style="font-size: 16px; margin: 12px 0 8px; font-weight: 800;">* ORIGINAL *</h2>
     <div class="receipt-line"><span>Date</span><strong>{__import__('datetime').datetime.now().strftime('%d/%m/%Y %H:%M')}</strong></div>

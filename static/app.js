@@ -20,7 +20,7 @@ function showReceiptModal(order) {
       <div class="receipt-modal-print-area">
         <div class="receipt">
           <h1>EITY FIT HARDWARES</h1>
-          <p>Nairobi Main Branch</p>
+          <p>PJ CENTER-PARKLANDS</p>
           <p>Tel: 0723056885</p>
           <h2 style="font-size: 16px; margin: 12px 0 8px; font-weight: 800;">* ORIGINAL *</h2>
           <div class="receipt-line"><span>Date</span><strong>${new Date().toLocaleString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})}</strong></div>
