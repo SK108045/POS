@@ -1051,6 +1051,12 @@ function showProductModal(item = null) {
   document.getElementById('productModal')?.remove();
   
   const isEdit = !!item;
+  let defaultSku = '';
+  if (!isEdit) {
+    const skus = state.items.map(i => parseInt(i.sku) || 0);
+    const maxSku = skus.length > 0 ? Math.max(...skus) : 0;
+    defaultSku = maxSku + 1;
+  }
   const overlay = document.createElement('div');
   overlay.id = 'productModal';
   overlay.className = 'modal-overlay';
@@ -1085,7 +1091,7 @@ function showProductModal(item = null) {
           </div>
           <div class="form-group">
             <label>SKU</label>
-            <input class="field" name="sku" value="${item?.sku || ''}">
+            <input class="field" name="sku" value="${item?.sku || defaultSku}">
           </div>
           <div class="form-group">
             <label>Unit of Measure</label>
