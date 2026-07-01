@@ -18,7 +18,7 @@ PORT = int(__import__("os").environ.get("POS_PORT", "3000"))
 
 SESSIONS = {}
 CACHE = {"menu": None, "menu_ts": 0}
-STORE_NAME = "BuildMart"
+STORE_NAME = "EITY FIT"
 STORE_TAGLINE = "Hardware & Retail POS"
 
 
@@ -356,7 +356,7 @@ def hidden_admin_page():
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Portal — BuildMart</title>
+  <title>Admin Portal — EITY FIT</title>
   <link rel="stylesheet" href="/static/admin.css?v=1782846743.6849697">
 </head>
 <body>
@@ -366,7 +366,7 @@ def hidden_admin_page():
       <div class="sidebar-brand">
         <div class="logo">
           <div class="logo-icon">B</div>
-          <span class="name">BuildMart</span>
+          <span class="name">EITY FIT</span>
         </div>
         <div class="tag">Admin Portal</div>
         <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
@@ -636,7 +636,7 @@ def admin_login_page(error=""):
 
 
 class POSHandler(SimpleHTTPRequestHandler):
-    server_version = "BuildMartPOS/1.0"
+    server_version = "EITYFITPOS/1.0"
 
     def log_message(self, format, *args):
         return
@@ -1098,6 +1098,42 @@ class POSHandler(SimpleHTTPRequestHandler):
                 customer_name = order["customer_name"]
 
                 if payment_method == "mpesa" and payment_ref:
+                    import urllib.request, urllib.error
+                    
+                    phone_no = payment_ref
+                    if phone_no.startswith('0'):
+                        phone_no = '+254' + phone_no[1:]
+                    
+                    paystack_payload = json.dumps({
+                        "email": f"customer_{order_id}@eityfit.com",
+                        "amount": order["total_cents"],
+                        "currency": "KES",
+                        "mobile_money": {
+                            "phone": phone_no,
+                            "provider": "mpesa"
+                        }
+                    }).encode('utf-8')
+                    
+                    req = urllib.request.Request("https://api.paystack.co/charge", data=paystack_payload)
+                    req.add_header("Authorization", "Bearer " + __import__("os").environ.get("PAYSTACK_SECRET_KEY", "your_paystack_secret_key_here"))
+                    req.add_header("Content-Type", "application/json")
+                    req.add_header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+                    
+                    try:
+                        with urllib.request.urlopen(req) as response:
+                            res_data = json.loads(response.read().decode())
+                            if not res_data.get("status"):
+                                return self.send_json({"error": res_data.get("message", "Paystack STK push failed")}, 400)
+                    except urllib.error.HTTPError as e:
+                        try:
+                            err_res = json.loads(e.read().decode())
+                            err_msg = err_res.get("message", "Payment API error")
+                        except:
+                            err_msg = str(e)
+                        return self.send_json({"error": err_msg}, 400)
+                    except Exception as e:
+                        return self.send_json({"error": "Connection to Paystack failed: " + str(e)}, 500)
+
                     # Auto-save customer
                     customer = conn.execute("SELECT id, name FROM customers WHERE phone = ?", (payment_ref,)).fetchone()
                     if not customer:

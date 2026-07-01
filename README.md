@@ -1,4 +1,4 @@
-# BuildMart POS
+# EITY FIT POS
 
 A simple Point of Sale (POS) system for retail and hardware stores. It is built with Python, SQLite, HTML, CSS, and vanilla JavaScript, with a focus on being lightweight and easy to run without requiring additional frameworks or services.
 

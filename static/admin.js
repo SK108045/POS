@@ -114,7 +114,7 @@ function buildDashboard(s) {
     <div class="page-header">
       <div class="page-header-left">
         <h1>Dashboard</h1>
-        <p>Live business overview for BuildMart Retail POS</p>
+        <p>Live business overview for EITY FIT Retail POS</p>
       </div>
       <button class="btn btn-ghost btn-sm" onclick="renderDashboard()">Refresh</button>
     </div>
@@ -130,11 +130,7 @@ function buildDashboard(s) {
         <div class="stat-value">${money(t.sales_week)}</div>
         <div class="stat-sub">Last 7 days</div>
       </div>
-      <div class="stat-card warn">
-        <div class="stat-label">Unpaid Orders</div>
-        <div class="stat-value">${fmt(t.unpaid_orders)}</div>
-        <div class="stat-sub">${money(t.unpaid_total)} outstanding</div>
-      </div>
+
       <div class="stat-card info">
         <div class="stat-label">Active Staff</div>
         <div class="stat-value">${fmt(c.active_users)}</div>
@@ -191,7 +187,7 @@ function buildDashboard(s) {
   $('#topItemsArea').innerHTML = s.top_items.length ? `
     <div class="chart-area" id="barChart"></div>
     <div style="display:flex;justify-content:space-between;margin-top:8px;gap:4px;align-items:flex-start;">
-      ${s.top_items.map(i=>`<div style="flex:1;text-align:center;font-size:10px;color:var(--muted);word-wrap:break-word;line-height:1.2;">${i.name}</div>`).join('')}
+      ${s.top_items.map(i=>`<div style="flex:1;text-align:center;font-size:11px;font-weight:700;color:var(--navy);word-wrap:break-word;line-height:1.3;">${i.name}</div>`).join('')}
     </div>
   ` : `<div class="empty-state"><p>No sales data yet</p></div>`;
 
@@ -763,7 +759,7 @@ function buildCustomers() {
               <td>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <button class="btn btn-ghost btn-sm" onclick="editCustomer(${c.id})">Edit</button>
-                  <a class="btn btn-primary btn-sm" href="https://wa.me/${c.phone.replace(/\+/g,'').replace(/^0/, '254')}?text=Thank%20you%20for%20shopping%20at%20BuildMart%21%20We%20value%20your%20business." target="_blank" style="text-decoration:none; display:inline-flex;">Send PR Message</a>
+                  <a class="btn btn-primary btn-sm" href="https://wa.me/${c.phone.replace(/\+/g,'').replace(/^0/, '254')}?text=Thank%20you%20for%20shopping%20at%20EITY%20FIT%21%20We%20value%20your%20business." target="_blank" style="text-decoration:none; display:inline-flex;">Send PR Message</a>
                 </div>
               </td>
             </tr>

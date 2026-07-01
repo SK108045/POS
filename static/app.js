@@ -19,7 +19,7 @@ function showReceiptModal(order) {
       <button class="receipt-modal-close" id="receiptModalClose" title="Close">&times;</button>
       <div class="receipt-modal-print-area">
         <div class="receipt">
-          <h1>BuildMart</h1>
+          <h1>EITY FIT</h1>
           <p>Hardware &amp; Retail POS</p>
           <div class="receipt-line"><span>Receipt #</span><strong>${order.ticket_no}</strong></div>
           <div class="receipt-line"><span>Type</span><strong>${order.order_type}</strong></div>
@@ -28,7 +28,7 @@ function showReceiptModal(order) {
           <div class="receipt-line"><span>Status</span><strong>${order.status}</strong></div>
           <table><tbody>${itemRows}</tbody></table>
           <div class="receipt-total"><span>Total</span><strong>KES ${moneyRaw(order.total_cents)}</strong></div>
-          <p class="receipt-note">Thank you for shopping at BuildMart!</p>
+          <p class="receipt-note">Thank you for shopping at EITY FIT!</p>
           <button id="receiptPrintBtn">Print Receipt</button>
         </div>
       </div>
@@ -84,7 +84,14 @@ async function api(path, options = {}) {
   const res = await fetch(path, init);
   if (res.status === 401) location.href = '/login';
   if (res.status === 403) location.href = '/login';
-  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+  if (!res.ok) {
+    let errText = `Request failed: ${res.status}`;
+    try {
+      const errBody = await res.json();
+      if (errBody && errBody.error) errText = errBody.error;
+    } catch(e) {}
+    throw new Error(errText);
+  }
   return res.json();
 }
 
@@ -531,15 +538,32 @@ function showCheckoutModal(order) {
         body: { order_id: order.id, payment_method: method, payment_ref: ref }
       });
       
-      msgEl.style.color = 'var(--ok)';
-      msgEl.textContent = 'Payment successful! Generating receipt...';
-      
-      setTimeout(() => {
-        overlay.remove();
-        showReceiptModal(paidOrder);
-        state.order = null; 
-        renderTicket();
-      }, 800);
+      if (method === 'mpesa') {
+        msgEl.style.color = 'var(--ok)';
+        msgEl.textContent = 'Prompt sent! Waiting for customer to enter PIN...';
+        const btn = overlay.querySelector('#chkConfirm');
+        btn.textContent = 'Payment Received — Print Receipt';
+        btn.disabled = false;
+        
+        // Remove old listener by replacing the button, then add the new print action
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', () => {
+          overlay.remove();
+          showReceiptModal(paidOrder);
+          state.order = null; 
+          renderTicket();
+        });
+      } else {
+        msgEl.style.color = 'var(--ok)';
+        msgEl.textContent = 'Payment successful! Generating receipt...';
+        setTimeout(() => {
+          overlay.remove();
+          showReceiptModal(paidOrder);
+          state.order = null; 
+          renderTicket();
+        }, 800);
+      }
       
     } catch (e) {
       msgEl.style.color = 'var(--danger)';
@@ -1338,7 +1362,7 @@ async function renderReports(period = 'today') {
         hr { border-top: 1px dashed black; border-bottom: none; margin: 10px 0; }
       </style></head><body>
         <div class="text-center">
-          <h2>BUILDMART POS</h2>
+          <h2>EITY FIT POS</h2>
           <p style="margin:0">Z-REPORT (${period.toUpperCase()})</p>
         </div>
         <hr>
