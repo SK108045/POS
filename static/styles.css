@@ -736,11 +736,16 @@ main { min-height: calc(100vh - 63px); }
   width: min(320px, 100%);
   background: white;
   color: #000;
-  font-weight: 700;
   padding: 18px;
   border: 1px solid #ddd;
   border-radius: 6px;
   box-shadow: var(--shadow);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.receipt * {
+  font-weight: 800 !important;
+  color: #000 !important;
 }
 
 .receipt h1, .receipt p {
