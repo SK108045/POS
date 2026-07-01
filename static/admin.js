@@ -461,6 +461,12 @@ function editItem(id) {
 function openItemModal(item) {
   const cats = state.menu.categories;
   const isNew = !item;
+  let defaultSku = '';
+  if (isNew) {
+    const skus = state.menu.items.map(i => parseInt(i.sku) || 0);
+    const maxSku = skus.length > 0 ? Math.max(...skus) : 0;
+    defaultSku = maxSku + 1;
+  }
   const overlay = openModal(`
     <div class="modal-header">
       <div class="modal-title">${isNew ? 'Add Product' : 'Edit Product'}</div>
@@ -479,7 +485,7 @@ function openItemModal(item) {
       </div>
       <div class="form-group">
         <label class="form-label">SKU</label>
-        <input class="form-input" id="mSku" value="${item?.sku||''}" placeholder="e.g. EL-001">
+        <input class="form-input" id="mSku" value="${item?.sku || defaultSku}" placeholder="e.g. 17">
       </div>
       <div class="form-group">
         <label class="form-label">Price (KES)</label>
