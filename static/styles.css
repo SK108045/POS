@@ -740,12 +740,13 @@ main { min-height: calc(100vh - 63px); }
   border: 1px solid #ddd;
   border-radius: 6px;
   box-shadow: var(--shadow);
-  font-family: 'Courier New', Courier, monospace;
 }
 
 .receipt * {
-  font-weight: 800 !important;
+  font-weight: 900 !important;
   color: #000 !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  -webkit-text-stroke: 0.6px black !important;
 }
 
 .receipt h1, .receipt p {
@@ -1075,9 +1076,10 @@ main { min-height: calc(100vh - 63px); }
   }
 
   .receipt, .receipt * {
-    font-family: 'Courier New', Courier, monospace !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
     color: #000 !important;
     font-weight: 900 !important;
+    -webkit-text-stroke: 0.6px black !important;
   }
 
   .receipt {
