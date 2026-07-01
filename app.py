@@ -333,10 +333,12 @@ def receipt_page(order, autoprint=False):
 <body class="receipt-body">
   <section class="receipt">
     <h1>{STORE_NAME} HARDWARES</h1>
+    <p>Nairobi Main Branch</p>
     <p>Tel: 0723056885</p>
     <h2 style="font-size: 16px; margin: 12px 0 8px; font-weight: 800;">* ORIGINAL *</h2>
     <div class="receipt-line"><span>Date</span><strong>{__import__('datetime').datetime.now().strftime('%d/%m/%Y %H:%M')}</strong></div>
     <div class="receipt-line"><span>Receipt #</span><strong>{order['ticket_no']}</strong></div>
+    <div class="receipt-line"><span>Terminal</span><strong>POS-01</strong></div>
     <div class="receipt-line"><span>Type</span><strong>{order['order_type']}</strong></div>
     <div class="receipt-line"><span>Served By</span><strong>{order.get('employee_name') or '-'}</strong></div>
     <div class="receipt-line"><span>Status</span><strong>{order['status']}</strong></div>
@@ -352,9 +354,11 @@ def receipt_page(order, autoprint=False):
     <div class="receipt-line"><span>Total Excl. VAT</span><strong>KES {f"{(order['total_cents'] / 1.16) / 100:,.2f}"}</strong></div>
     <div class="receipt-line"><span>Total VAT (16%)</span><strong>KES {f"{(order['total_cents'] - (order['total_cents'] / 1.16)) / 100:,.2f}"}</strong></div>
     <div style="border-top: 1px dashed var(--line); margin: 10px 0;"></div>
+    <div class="receipt-line"><span>Payment Method</span><strong>{(order.get('payment_method') or 'CASH').upper()}</strong></div>
+    <div class="receipt-line"><span>Txn Ref</span><strong>{order.get('payment_ref') or f"TXN-{order['id'] * 1234}"}</strong></div>
     <p class="receipt-note" style="line-height: 1.6; margin-top: 12px;">
       Thank you for shopping at {STORE_NAME}!<br>
-      Please retain receipt for your records.<br><br>
+      Please keep this receipt for warranty purposes.<br><br>
       Powered by EITY FIT POS SYSTEM<br>
       ------- END OF RECEIPT -------
     </p>
